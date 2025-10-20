@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     TaskToken: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
+      address: "0xd04ff4a75edd737a73e92b2f2274cb887d96e110",
       abi: [
         {
           type: "constructor",
@@ -478,10 +478,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 1,
+      deployedOnBlock: 77,
     },
     SoulboundUserNFT: {
-      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
+      address: "0xc6b8fbf96cf7bbe45576417ec2163acecfa88ecc",
       abi: [
         {
           type: "constructor",
@@ -1517,10 +1517,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 78,
     },
     ContentShare: {
-      address: "0xb19b36b1456e65e3a6d514d3f715f204bd59f431",
+      address: "0x29a79095352a718b3d7fe84e1f14e9f34a35598e",
       abi: [
         {
           type: "constructor",
@@ -2134,10 +2134,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 79,
     },
     CollectiveRental: {
-      address: "0x8ce361602b935680e8dec218b820ff5056beb7af",
+      address: "0x6379ebd504941f50d5bfde9348b37593bd29c835",
       abi: [
         {
           type: "constructor",
@@ -2913,25 +2913,6 @@ const deployedContracts = {
           anonymous: false,
         },
         {
-          type: "event",
-          name: "RentalEnded",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "success",
-              type: "bool",
-              indexed: false,
-              internalType: "bool",
-            },
-          ],
-          anonymous: false,
-        },
-        {
           type: "error",
           name: "OwnableInvalidOwner",
           inputs: [
@@ -2975,10 +2956,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 79,
     },
     ProposalGovernance: {
-      address: "0xe1aa25618fa0c7a1cfdab5d6b456af611873b629",
+      address: "0x5b3120d0da5fdcba7aef87a9c3c64829c1c0d76b",
       abi: [
         {
           type: "constructor",
@@ -3335,10 +3316,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 80,
     },
     MilestonePaymentTask: {
-      address: "0x12975173b87f7595ee45dffb2ab812ece596bf84",
+      address: "0x45009dd3abbe29db54fc5d893ceaa98a624882df",
       abi: [
         {
           type: "constructor",
@@ -4575,10 +4556,10 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 4,
+      deployedOnBlock: 82,
     },
     DisputeResolver: {
-      address: "0x0c8e79f3534b00d9a3d4a856b665bf4ebc22f2ba",
+      address: "0x19a1c09fe3399c4daaa2c98b936a8e460fc5eaa4",
       abi: [
         {
           type: "constructor",
@@ -5266,10 +5247,10 @@ const deployedContracts = {
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 80,
     },
     FixedPaymentTask: {
-      address: "0xed1db453c3156ff3155a97ad217b3087d5dc5f6e",
+      address: "0x49b8e3b089d4ebf9f37b1da9b839ec013c2cd8c9",
       abi: [
         {
           type: "constructor",
@@ -6215,10 +6196,10 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 80,
     },
     BiddingTask: {
-      address: "0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d",
+      address: "0x067c804bb006836469379d4a2a69a81803bd1f45",
       abi: [
         {
           type: "constructor",
@@ -7279,7 +7260,7 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 3,
+      deployedOnBlock: 81,
     },
   },
 } as const;

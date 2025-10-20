@@ -98,144 +98,62 @@ contract SimulateTestData is Script {
     }
 
     function _createTestData() internal {
-        console.log("Creating test data...");
+        console.log("Creating enhanced test data for Guild Score calculation...");
 
-        // Mint some tokens to test accounts
-        // 使用TaskToken合约的水龙头功能来铸造代币
-        vm.startBroadcast(freelancer2PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
+        // Mint tokens to all test accounts multiple times for more balance
+        address[] memory accounts = new address[](8);
+        uint256[] memory privateKeys = new uint256[](8);
+        
+        accounts[0] = freelancer2;
+        accounts[1] = worker1;
+        accounts[2] = worker2;
+        accounts[3] = worker3;
+        accounts[4] = admin1;
+        accounts[5] = admin2;
+        accounts[6] = admin3;
+        accounts[7] = client1;
+        
+        privateKeys[0] = freelancer2PrivateKey;
+        privateKeys[1] = worker1PrivateKey;
+        privateKeys[2] = worker2PrivateKey;
+        privateKeys[3] = worker3PrivateKey;
+        privateKeys[4] = admin1PrivateKey;
+        privateKeys[5] = admin2PrivateKey;
+        privateKeys[6] = admin3PrivateKey;
+        privateKeys[7] = client1PrivateKey;
 
-        vm.startBroadcast(worker1PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
+        // Mint tokens multiple times for each account
+        for (uint256 i = 0; i < accounts.length; i++) {
+            vm.startBroadcast(privateKeys[i]);
+            // Mint 5 times for more tokens
+            for (uint256 j = 0; j < 5; j++) {
+                taskToken.faucetMint();
+            }
+            vm.stopBroadcast();
+        }
 
-        vm.startBroadcast(worker2PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
+        // Skip user NFT creation as they already exist
+        console.log("Skipping user NFT creation - they already exist");
 
-        vm.startBroadcast(worker3PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
+        // All user NFTs already exist, skipping creation
 
-        vm.startBroadcast(admin1PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
-
-        vm.startBroadcast(admin2PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
-
-        vm.startBroadcast(admin3PrivateKey);
-        taskToken.faucetMint();
-        vm.stopBroadcast();
-
-        // Set up user info for test accounts - First mint NFTs, then update profiles
-        // Worker 1 profile
-        vm.startBroadcast(worker1PrivateKey);
-        // First mint the NFT
-        string[] memory skills1 = new string[](3);
-        skills1[0] = "Solidity";
-        skills1[1] = "Smart Contracts";
-        skills1[2] = "Web3";
-        soulboundUserNFT.mintUserNFT("Worker1", "worker1@example.com", "Experienced developer", "https://example.com/worker1", skills1);
-        vm.stopBroadcast();
-
-        // Worker 2 profile
-        vm.startBroadcast(worker2PrivateKey);
-        string[] memory skills2 = new string[](2);
-        skills2[0] = "React";
-        skills2[1] = "TypeScript";
-        soulboundUserNFT.mintUserNFT("Worker2", "worker2@example.com", "Frontend specialist", "https://example.com/worker2", skills2);
-        vm.stopBroadcast();
-
-        // Worker 3 profile
-        vm.startBroadcast(worker3PrivateKey);
-        string[] memory skills3 = new string[](2);
-        skills3[0] = "Node.js";
-        skills3[1] = "MongoDB";
-        soulboundUserNFT.mintUserNFT("Worker3", "worker3@example.com", "Backend engineer", "https://example.com/worker3", skills3);
-        vm.stopBroadcast();
-
-        // Client 1 profile
-        vm.startBroadcast(client1PrivateKey);
-        string[] memory skills4 = new string[](1);
-        skills4[0] = "Project Management";
-        soulboundUserNFT.mintUserNFT("Client1", "client1@example.com", "Project manager", "https://example.com/client1", skills4);
-        vm.stopBroadcast();
-
-        // Client 2 profile
-        vm.startBroadcast(client2PrivateKey);
-        string[] memory skills5 = new string[](2);
-        skills5[0] = "Agile";
-        skills5[1] = "Scrum";
-        soulboundUserNFT.mintUserNFT("Client2", "client2@example.com", "Product owner", "https://example.com/client2", skills5);
-        vm.stopBroadcast();
-
-        // Freelancer 1 profile
-        vm.startBroadcast(freelancer1PrivateKey);
-        string[] memory skills6 = new string[](4);
-        skills6[0] = "JavaScript";
-        skills6[1] = "Python";
-        skills6[2] = "React";
-        skills6[3] = "Node.js";
-        soulboundUserNFT.mintUserNFT("Freelancer1", "freelancer1@example.com", "Full Stack Developer", "https://example.com/freelancer1", skills6);
-        vm.stopBroadcast();
-
-        // Freelancer 2 profile
-        vm.startBroadcast(freelancer2PrivateKey);
-        string[] memory skills7 = new string[](3);
-        skills7[0] = "Solidity";
-        skills7[1] = "Security Audit";
-        skills7[2] = "Formal Verification";
-        soulboundUserNFT.mintUserNFT("Freelancer2", "freelancer2@example.com", "Smart Contract Auditor", "https://example.com/freelancer2", skills7);
-        vm.stopBroadcast();
-
-        // Admin profiles - need to mint NFTs and set them as elite users (顶级游民)
-        vm.startBroadcast(admin1PrivateKey);
-        string[] memory adminSkills1 = new string[](2);
-        adminSkills1[0] = "Governance";
-        adminSkills1[1] = "Dispute Resolution";
-        soulboundUserNFT.mintUserNFT("Admin1", "admin1@example.com", "Platform Administrator", "https://example.com/admin1", adminSkills1);
-        vm.stopBroadcast();
-
-        vm.startBroadcast(admin2PrivateKey);
-        string[] memory adminSkills2 = new string[](2);
-        adminSkills2[0] = "Community Management";
-        adminSkills2[1] = "Quality Assurance";
-        soulboundUserNFT.mintUserNFT("Admin2", "admin2@example.com", "Community Manager", "https://example.com/admin2", adminSkills2);
-        vm.stopBroadcast();
-
-        vm.startBroadcast(admin3PrivateKey);
-        string[] memory adminSkills3 = new string[](2);
-        adminSkills3[0] = "Technical Review";
-        adminSkills3[1] = "Platform Security";
-        soulboundUserNFT.mintUserNFT("Admin3", "admin3@example.com", "Technical Administrator", "https://example.com/admin3", adminSkills3);
-        vm.stopBroadcast();
-
-        // Note: Admin grade setting requires contract owner - skipping for now
-        // Admins will remain as Poor grade (新手游民) for this test
-
-        // No need to restart broadcasting here as we're immediately going to create tasks
-        // Create fixed payment tasks
+        // Create multiple rounds of activities for richer data
+        console.log("Creating multiple rounds of activities...");
+        
+        // Round 1: Basic tasks
         _createFixedPaymentTasks();
-
-        // Create bidding tasks
         _createBiddingTasks();
-
-        // Create milestone payment tasks
         _createMilestonePaymentTasks();
-
-        // Create disputes
+        
+        // Round 2: Additional tasks for more data
+        _createAdditionalTasks();
+        
+        // Round 3: Disputes and edge cases
         _createDisputes();
-
-        // Create collective rental simulation
+        
+        // Round 4: Community features
         _createCollectiveRentalTests();
-
-        // Create content share simulation
         _createContentShareTests();
-
-        // Create proposal governance simulation
         _createProposalGovernanceTests();
     }
 
@@ -263,57 +181,81 @@ contract SimulateTestData is Script {
     function _createFixedPaymentTasks() internal {
         console.log("Creating fixed payment tasks...");
 
-        // Approve contracts to spend tokens
+        // Task 1: Simple completed task
         vm.startBroadcast(freelancer2PrivateKey);
         taskToken.approve(address(fixedPaymentTask), type(uint256).max);
-
-        // Create a simple fixed payment task - using freelancer2 account
         fixedPaymentTask.createTask("Simple Task", "This is a simple fixed payment task", block.timestamp + 30 days);
-
         uint256 taskId1 = fixedPaymentTask.taskCounter();
-        console.log("Created fixed payment task with ID:", taskId1);
-
-        // Add a worker to the task
         fixedPaymentTask.addWorker(taskId1, worker1, 100 * 10 ** 18);
-        console.log("Added worker to fixed payment task");
         vm.stopBroadcast();
 
-        // Stop broadcasting to allow worker to submit proof of work
         vm.startBroadcast(worker1PrivateKey);
         fixedPaymentTask.submitProofOfWork(taskId1, "Completed the simple task");
         vm.stopBroadcast();
-        console.log("Submitted proof of work for fixed payment task");
 
-        console.log("Task is in progress, proceeding to approve proof of work");
-
-        // Approve the proof of work
         vm.startBroadcast(freelancer2PrivateKey);
         fixedPaymentTask.approveProofOfWork(taskId1);
         vm.stopBroadcast();
-        console.log("Approved proof of work for fixed payment task");
 
-        // Stop broadcasting to allow worker to pay the task
         vm.startBroadcast(worker1PrivateKey);
-        // Pay the task
         fixedPaymentTask.payTask(taskId1);
         vm.stopBroadcast();
-        console.log("Paid fixed payment task");
+        console.log("Task 1 completed and paid");
+
+        // Task 2: Another completed task
+        vm.startBroadcast(client1PrivateKey);
+        taskToken.approve(address(fixedPaymentTask), type(uint256).max);
+        fixedPaymentTask.createTask("Web Development", "Build a responsive website", block.timestamp + 20 days);
+        uint256 taskId2 = fixedPaymentTask.taskCounter();
+        fixedPaymentTask.addWorker(taskId2, worker2, 150 * 10 ** 18);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        fixedPaymentTask.submitProofOfWork(taskId2, "Completed responsive website with modern design");
+        vm.stopBroadcast();
+
+        vm.startBroadcast(client1PrivateKey);
+        fixedPaymentTask.approveProofOfWork(taskId2);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        fixedPaymentTask.payTask(taskId2);
+        vm.stopBroadcast();
+        console.log("Task 2 completed and paid");
+
+        // Task 3: High-value completed task
+        vm.startBroadcast(admin1PrivateKey);
+        taskToken.approve(address(fixedPaymentTask), type(uint256).max);
+        fixedPaymentTask.createTask("Smart Contract Audit", "Audit a DeFi protocol", block.timestamp + 25 days);
+        uint256 taskId3 = fixedPaymentTask.taskCounter();
+        fixedPaymentTask.addWorker(taskId3, worker3, 300 * 10 ** 18);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker3PrivateKey);
+        fixedPaymentTask.submitProofOfWork(taskId3, "Completed comprehensive security audit with detailed report");
+        vm.stopBroadcast();
+
+        vm.startBroadcast(admin1PrivateKey);
+        fixedPaymentTask.approveProofOfWork(taskId3);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker3PrivateKey);
+        fixedPaymentTask.payTask(taskId3);
+        vm.stopBroadcast();
+        console.log("Task 3 completed and paid");
     }
 
     function _createBiddingTasks() internal {
         console.log("Creating bidding tasks...");
 
-        // Approve contracts to spend tokens
+        // Bidding Task 1: Multiple bidders, completed
         vm.startBroadcast(freelancer2PrivateKey);
         taskToken.approve(address(biddingTask), type(uint256).max);
-
-        // Create a bidding task - using freelancer2 account
         biddingTask.createTask("Bidding Task", "This is a task with bidding", block.timestamp + 30 days);
-        vm.stopBroadcast();
         uint256 taskId1 = biddingTask.taskCounter();
-        console.log("Created bidding task with ID:", taskId1);
+        vm.stopBroadcast();
 
-        // Stop broadcasting to allow workers to submit bids
+        // Multiple bidders
         vm.startBroadcast(worker1PrivateKey);
         biddingTask.submitBid(taskId1, 80 * 10 ** 18, "I can do this for 80 tokens", 5 days);
         vm.stopBroadcast();
@@ -322,172 +264,178 @@ contract SimulateTestData is Script {
         biddingTask.submitBid(taskId1, 90 * 10 ** 18, "I can do this for 90 tokens", 7 days);
         vm.stopBroadcast();
 
-        // Restart broadcasting
+        vm.startBroadcast(worker3PrivateKey);
+        biddingTask.submitBid(taskId1, 75 * 10 ** 18, "Best price, 6 days delivery", 6 days);
+        vm.stopBroadcast();
+
+        // Accept the best bid (worker3)
         vm.startBroadcast(freelancer2PrivateKey);
-        console.log("Submitted bids for bidding task");
-
-        // Accept a worker
-        biddingTask.acceptBid(taskId1, 0);
-        console.log("Accepted worker for bidding task");
-        // Stop broadcasting to allow worker to submit proof
+        biddingTask.acceptBid(taskId1, 2); // Accept worker3's bid
         vm.stopBroadcast();
 
-        vm.startBroadcast(worker1PrivateKey);
-        // Submit proof of work
-        biddingTask.submitProofOfWork(taskId1, "Completed the bidding task");
+        vm.startBroadcast(worker3PrivateKey);
+        biddingTask.submitProofOfWork(taskId1, "Completed the bidding task with high quality");
         vm.stopBroadcast();
-        console.log("Submitted proof of work for bidding task");
 
-        // Approve the proof of work
         vm.startBroadcast(freelancer2PrivateKey);
         biddingTask.approveProofOfWork(taskId1);
         vm.stopBroadcast();
-        console.log("Approved proof of work for bidding task");
 
-        // Stop broadcasting to allow worker to pay the task
-        vm.startBroadcast(worker1PrivateKey);
-        // Pay the task
+        vm.startBroadcast(worker3PrivateKey);
         biddingTask.payTask(taskId1);
         vm.stopBroadcast();
-        console.log("Paid bidding task");
+        console.log("Bidding Task 1 completed and paid");
+
+        // Bidding Task 2: Another completed bidding task
+        vm.startBroadcast(client2PrivateKey);
+        taskToken.approve(address(biddingTask), type(uint256).max);
+        biddingTask.createTask("Mobile App Development", "Build a cross-platform mobile app", block.timestamp + 25 days);
+        uint256 taskId2 = biddingTask.taskCounter();
+        vm.stopBroadcast();
+
+        // Multiple bidders for task 2
+        vm.startBroadcast(worker1PrivateKey);
+        biddingTask.submitBid(taskId2, 200 * 10 ** 18, "I can deliver in 2 weeks", 14 days);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.submitBid(taskId2, 180 * 10 ** 18, "Best price, 3 weeks delivery", 21 days);
+        vm.stopBroadcast();
+
+        // Accept worker2's bid
+        vm.startBroadcast(client2PrivateKey);
+        biddingTask.acceptBid(taskId2, 1);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.submitProofOfWork(taskId2, "Delivered high-quality mobile app with all features");
+        vm.stopBroadcast();
+
+        vm.startBroadcast(client2PrivateKey);
+        biddingTask.approveProofOfWork(taskId2);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.payTask(taskId2);
+        vm.stopBroadcast();
+        console.log("Bidding Task 2 completed and paid");
     }
 
     function _createMilestonePaymentTasks() internal {
         console.log("Creating milestone payment tasks...");
 
-        // Approve contracts to spend tokens
+        // Milestone Task 1: Complete milestone task
         vm.startBroadcast(freelancer2PrivateKey);
         taskToken.approve(address(milestonePaymentTask), type(uint256).max);
-        // Create a milestone payment task - using freelancer2 account
         milestonePaymentTask.createTask("Milestone Task", "This is a task with milestones", block.timestamp + 60 days);
-
         uint256 taskId1 = milestonePaymentTask.taskCounter();
-        console.log("Created milestone payment task with ID:", taskId1);
 
-        // Add milestones - using freelancer2 account
+        // Add milestones
         milestonePaymentTask.addMilestone(taskId1, "First milestone", 50 * 10 ** 18);
         milestonePaymentTask.addMilestone(taskId1, "Second milestone", 70 * 10 ** 18);
         milestonePaymentTask.addMilestone(taskId1, "Final milestone", 80 * 10 ** 18);
-        console.log("Added milestones");
-
-        // Add worker
         milestonePaymentTask.addWorker(taskId1, worker2);
         vm.stopBroadcast();
-        console.log("Added worker to milestone payment task");
 
-        // Submit and process each milestone
+        // Complete all milestones
         for (uint256 i = 0; i < 3; i++) {
-            // Start broadcasting for worker2
             vm.startBroadcast(worker2PrivateKey);
-
-            // Submit proof for milestone
             milestonePaymentTask.submitMilestoneProofOfWork(
-                taskId1, i, string.concat("Completed milestone ", vm.toString(i))
+                taskId1, i, string.concat("Completed milestone ", vm.toString(i + 1))
             );
             vm.stopBroadcast();
-            console.log("Submitted proof of work for milestone:", i);
 
-            // Start broadcasting for freelancer2
             vm.startBroadcast(freelancer2PrivateKey);
-
-            // Approve milestone
             milestonePaymentTask.approveMilestone(taskId1, i);
-            console.log("Approved milestone:", i);
-
-            // Stop broadcasting to allow worker to pay for milestone
             vm.stopBroadcast();
-            vm.startBroadcast(worker2PrivateKey);
 
-            // Pay for milestone
+            vm.startBroadcast(worker2PrivateKey);
             milestonePaymentTask.payMilestone(taskId1, i);
             vm.stopBroadcast();
-            console.log("Paid for milestone:", i);
         }
+        console.log("Milestone Task 1 completed with all milestones paid");
 
-        // Finalize task after all milestones completed
-        // milestonePaymentTask.finalizeTask(taskId1);
-        console.log("Finalized milestone payment task");
+        // Milestone Task 2: Complex project with more milestones
+        vm.startBroadcast(admin2PrivateKey);
+        taskToken.approve(address(milestonePaymentTask), type(uint256).max);
+        milestonePaymentTask.createTask("Full Stack DApp", "Complete decentralized application", block.timestamp + 45 days);
+        uint256 taskId2 = milestonePaymentTask.taskCounter();
+
+        // Add multiple milestones
+        milestonePaymentTask.addMilestone(taskId2, "Frontend Development", 100 * 10 ** 18);
+        milestonePaymentTask.addMilestone(taskId2, "Smart Contract Development", 150 * 10 ** 18);
+        milestonePaymentTask.addMilestone(taskId2, "Integration & Testing", 100 * 10 ** 18);
+        milestonePaymentTask.addMilestone(taskId2, "Deployment & Documentation", 50 * 10 ** 18);
+        milestonePaymentTask.addWorker(taskId2, worker1);
+        vm.stopBroadcast();
+
+        // Complete all milestones for task 2
+        for (uint256 i = 0; i < 4; i++) {
+            vm.startBroadcast(worker1PrivateKey);
+            milestonePaymentTask.submitMilestoneProofOfWork(
+                taskId2, i, string.concat("Completed milestone ", vm.toString(i + 1), " of DApp project")
+            );
+            vm.stopBroadcast();
+
+            vm.startBroadcast(admin2PrivateKey);
+            milestonePaymentTask.approveMilestone(taskId2, i);
+            vm.stopBroadcast();
+
+            vm.startBroadcast(worker1PrivateKey);
+            milestonePaymentTask.payMilestone(taskId2, i);
+            vm.stopBroadcast();
+        }
+        console.log("Milestone Task 2 completed with all 4 milestones paid");
     }
 
     function _createDisputes() internal {
         console.log("Creating disputes...");
 
-        // Create a fixed payment task with dispute - using freelancer2 account
+        // Dispute 1: Fixed payment task dispute
         vm.startBroadcast(freelancer2PrivateKey);
         taskToken.approve(address(fixedPaymentTask), type(uint256).max);
         fixedPaymentTask.createTask(
             "Disputed Fixed Payment Task", "This task will have a dispute", block.timestamp + 30 days
         );
         uint256 taskId1 = fixedPaymentTask.taskCounter();
-        console.log("Created fixed payment task for dispute with ID:", taskId1);
-
-        // Add a worker to the task
         fixedPaymentTask.addWorker(taskId1, worker3, 150 * 10 ** 18);
-
-        // Stop broadcasting to allow worker to submit proof
-        // Submit proof of work
         vm.stopBroadcast();
+
         vm.startBroadcast(worker3PrivateKey);
         fixedPaymentTask.submitProofOfWork(taskId1, "Completed the disputed task");
         vm.stopBroadcast();
-        console.log("Submitted proof of work for dispute task");
 
-        // Now have the task creator terminate the task to create a dispute
         vm.startBroadcast(freelancer2PrivateKey);
-        // Approve dispute processing fee
         uint256 processingReward = (150 * 10 ** 18 * disputeResolver.getDisputeProcessingRewardBps()) / 10000;
         taskToken.approve(address(fixedPaymentTask), processingReward);
-        console.log("Approved dispute processing fee:", processingReward);
-
-        // Terminate task to create dispute
         fixedPaymentTask.terminateTask(taskId1);
-        uint256 fixedPaymentTaskDisputeId = disputeResolver.disputeCounter() - 1;
         vm.stopBroadcast();
-        console.log("Terminated task to create dispute with ID:", fixedPaymentTaskDisputeId);
+        console.log("Dispute 1 created for fixed payment task");
 
-        // Create a milestone task with dispute - using freelancer2 account
-        vm.startBroadcast(freelancer2PrivateKey);
+        // Dispute 2: Milestone task dispute
+        vm.startBroadcast(admin1PrivateKey);
         taskToken.approve(address(milestonePaymentTask), type(uint256).max);
         milestonePaymentTask.createTask(
             "Disputed Milestone Task", "This milestone task will have a dispute", block.timestamp + 60 days
         );
         uint256 taskId2 = milestonePaymentTask.taskCounter();
-        console.log("Created milestone payment task for dispute with ID:", taskId2);
-
-        // Add milestones
         milestonePaymentTask.addMilestone(taskId2, "Disputed milestone", 100 * 10 ** 18);
-
         milestonePaymentTask.addMilestone(taskId2, "Second milestone", 150 * 10 ** 18);
-        console.log("Added milestones to disputed milestone task");
-
-        // Add worker
-        milestonePaymentTask.addWorker(taskId2, worker3);
+        milestonePaymentTask.addWorker(taskId2, worker1);
         vm.stopBroadcast();
-        console.log("Added worker to disputed milestone task");
 
-        // Stop broadcasting to allow worker to submit proof
-        vm.startBroadcast(worker3PrivateKey);
-        // Submit proof for first milestone
+        vm.startBroadcast(worker1PrivateKey);
         milestonePaymentTask.submitMilestoneProofOfWork(taskId2, 0, "Completed disputed milestone");
         vm.stopBroadcast();
-        console.log("Submitted proof of work for disputed milestone");
 
-        // Now have the task creator terminate the task to create a dispute
-        vm.startBroadcast(freelancer2PrivateKey);
-        // Approve dispute processing fee
+        vm.startBroadcast(admin1PrivateKey);
         uint256 processingReward2 = (100 * 10 ** 18 * disputeResolver.getDisputeProcessingRewardBps()) / 10000;
         taskToken.approve(address(milestonePaymentTask), processingReward2);
-        console.log("Approved dispute processing fee for milestone task:", processingReward2);
-
-        // Terminate task to create dispute
         milestonePaymentTask.terminateTask(taskId2);
-        uint256 milestoneTaskDisputeId = disputeResolver.disputeCounter() - 1;
         vm.stopBroadcast();
-        console.log("Terminated milestone task to create dispute with ID:", milestoneTaskDisputeId);
+        console.log("Dispute 2 created for milestone task");
 
-        // Note: Dispute voting requires elite users (顶级游民) - skipping for now
-        // The disputes have been created and are ready for manual processing
-        console.log("Disputes created successfully - ready for manual processing");
+        console.log("2 disputes created successfully");
     }
 
     function _createCollectiveRentalTests() internal {
@@ -574,4 +522,69 @@ contract SimulateTestData is Script {
         // The project has been created and is ready for manual governance testing
         console.log("Project created for governance testing - ready for manual proposal creation");
     }
+
+    /**
+     * @dev Create additional completed tasks for more diverse data
+     */
+    function _createAdditionalTasks() internal {
+        console.log("Creating additional completed tasks for richer data...");
+
+        // Additional completed fixed payment task
+        vm.startBroadcast(client2PrivateKey);
+        taskToken.approve(address(fixedPaymentTask), type(uint256).max);
+        fixedPaymentTask.createTask("Database Optimization", "Optimize database performance", block.timestamp + 10 days);
+        uint256 taskId1 = fixedPaymentTask.taskCounter();
+        fixedPaymentTask.addWorker(taskId1, worker1, 120 * 10 ** 18);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker1PrivateKey);
+        fixedPaymentTask.submitProofOfWork(taskId1, "Completed database optimization with 50% performance improvement");
+        vm.stopBroadcast();
+
+        vm.startBroadcast(client2PrivateKey);
+        fixedPaymentTask.approveProofOfWork(taskId1);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker1PrivateKey);
+        fixedPaymentTask.payTask(taskId1);
+        vm.stopBroadcast();
+        console.log("Additional Fixed Task completed and paid");
+
+        // Additional completed bidding task
+        vm.startBroadcast(admin3PrivateKey);
+        taskToken.approve(address(biddingTask), type(uint256).max);
+        biddingTask.createTask("API Development", "Build RESTful API", block.timestamp + 15 days);
+        uint256 taskId2 = biddingTask.taskCounter();
+        vm.stopBroadcast();
+
+        // Multiple bidders
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.submitBid(taskId2, 80 * 10 ** 18, "I can deliver in 1 week", 7 days);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker3PrivateKey);
+        biddingTask.submitBid(taskId2, 90 * 10 ** 18, "High quality, 10 days", 10 days);
+        vm.stopBroadcast();
+
+        // Accept worker2's bid
+        vm.startBroadcast(admin3PrivateKey);
+        biddingTask.acceptBid(taskId2, 0);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.submitProofOfWork(taskId2, "Delivered comprehensive RESTful API with documentation");
+        vm.stopBroadcast();
+
+        vm.startBroadcast(admin3PrivateKey);
+        biddingTask.approveProofOfWork(taskId2);
+        vm.stopBroadcast();
+
+        vm.startBroadcast(worker2PrivateKey);
+        biddingTask.payTask(taskId2);
+        vm.stopBroadcast();
+        console.log("Additional Bidding Task completed and paid");
+
+        console.log("2 additional tasks completed successfully");
+    }
+
 }

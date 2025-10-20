@@ -10,7 +10,7 @@ type Config struct {
 	LogLevel    string
 	Database    DatabaseConfig
 	Redis       RedisConfig
-	SubgraphURL string
+	SubgraphURL string `mapstructure:"subgraph_url"`
 	Blockchain  BlockchainConfig
 	Scheduler   SchedulerConfig
 }

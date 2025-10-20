@@ -8,7 +8,9 @@ import (
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/api/middleware"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/config"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/repository/db"
+	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/service/score"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/service/reputation"
+	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/service/sync"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/pkg/subgraph"
 )
 
@@ -36,8 +38,14 @@ func SetupRoutes(
 		reputation.NewCalculator(subgraphClient),
 	)
 
+	// 初始化同步服务
+	syncScheduler := sync.NewSyncScheduler(database, subgraphClient, cfg)
+
 	// 初始化处理器
 	reputationHandler := handlers.NewReputationHandler(reputationService)
+	syncHandler := handlers.NewSyncHandler(syncScheduler)
+	guildScoreService := score.NewEnhancedGuildScoreService(database.DB)
+	guildHandler := handlers.NewGuildHandler(guildScoreService)
 
 	// 健康检查
 	router.GET("/health", func(c *gin.Context) {
@@ -58,11 +66,29 @@ func SetupRoutes(
 			reputation.GET("/tier/:address", reputationHandler.GetUserTier) // 新增：获取用户等级
 		}
 
+		// Guild Score（增强版）相关路由
+		guild := v1.Group("/guild")
+		{
+			guild.GET("/score/:address", guildHandler.GetUserGuildScore)
+			guild.GET("/leaderboard", guildHandler.GetGuildLeaderboard)
+			guild.GET("/history/:address", guildHandler.GetGuildScoreHistory)
+		}
+
 		// 用户相关路由
 		users := v1.Group("/users")
 		{
 			users.GET("/:address", reputationHandler.GetUserProfile)
 			users.GET("/:address/stats", reputationHandler.GetUserStats)
+		}
+
+		// 数据同步相关路由
+		sync := v1.Group("/sync")
+		{
+			sync.POST("/users", syncHandler.SyncAllUsers)
+			sync.POST("/users/:address", syncHandler.SyncUser)
+			sync.POST("/users/batch", syncHandler.SyncUsersBatch)
+			sync.POST("/users/page", syncHandler.SyncUsersByPage)
+			sync.GET("/status", syncHandler.GetSyncStatus)
 		}
 	}
 

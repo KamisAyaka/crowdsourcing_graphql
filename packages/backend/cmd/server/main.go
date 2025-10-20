@@ -14,6 +14,7 @@ import (
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/config"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/repository/db"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/service/scheduler"
+	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/internal/service/sync"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/pkg/logger"
 	"github.com/KamisAyaka/crowdsourcing_graphql/packages/backend/pkg/subgraph"
 	"github.com/gin-gonic/gin"
@@ -58,6 +59,13 @@ func main() {
 	defer scoreScheduler.Stop()
 
 	logger.Info("Score scheduler started")
+
+	// 启动数据同步调度器
+	syncScheduler := sync.NewSyncScheduler(database, subgraphClient, cfg)
+	syncScheduler.Start()
+	defer syncScheduler.Stop()
+
+	logger.Info("Data sync scheduler started")
 
 	// 创建 HTTP 服务器
 	srv := &http.Server{
