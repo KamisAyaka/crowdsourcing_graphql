@@ -103,7 +103,7 @@ contract SimulateTestData is Script {
         // Mint tokens to all test accounts multiple times for more balance
         address[] memory accounts = new address[](8);
         uint256[] memory privateKeys = new uint256[](8);
-        
+
         accounts[0] = freelancer2;
         accounts[1] = worker1;
         accounts[2] = worker2;
@@ -112,7 +112,7 @@ contract SimulateTestData is Script {
         accounts[5] = admin2;
         accounts[6] = admin3;
         accounts[7] = client1;
-        
+
         privateKeys[0] = freelancer2PrivateKey;
         privateKeys[1] = worker1PrivateKey;
         privateKeys[2] = worker2PrivateKey;
@@ -139,18 +139,18 @@ contract SimulateTestData is Script {
 
         // Create multiple rounds of activities for richer data
         console.log("Creating multiple rounds of activities...");
-        
+
         // Round 1: Basic tasks
         _createFixedPaymentTasks();
         _createBiddingTasks();
         _createMilestonePaymentTasks();
-        
+
         // Round 2: Additional tasks for more data
         _createAdditionalTasks();
-        
+
         // Round 3: Disputes and edge cases
         _createDisputes();
-        
+
         // Round 4: Community features
         _createCollectiveRentalTests();
         _createContentShareTests();
@@ -358,7 +358,9 @@ contract SimulateTestData is Script {
         // Milestone Task 2: Complex project with more milestones
         vm.startBroadcast(admin2PrivateKey);
         taskToken.approve(address(milestonePaymentTask), type(uint256).max);
-        milestonePaymentTask.createTask("Full Stack DApp", "Complete decentralized application", block.timestamp + 45 days);
+        milestonePaymentTask.createTask(
+            "Full Stack DApp", "Complete decentralized application", block.timestamp + 45 days
+        );
         uint256 taskId2 = milestonePaymentTask.taskCounter();
 
         // Add multiple milestones
@@ -444,7 +446,7 @@ contract SimulateTestData is Script {
         // Approve collective rental contract to spend tokens
         vm.startBroadcast(freelancer1PrivateKey);
         taskToken.approve(address(collectiveRental), type(uint256).max);
-        
+
         // Create a collective rental project
         collectiveRental.createRentalProject(
             "A comprehensive workshop on Web3 development",
@@ -452,7 +454,7 @@ contract SimulateTestData is Script {
             10, // goal of 10 participants
             block.timestamp + 7 days // 7 days deadline
         );
-        
+
         uint256 projectId = collectiveRental.getProjectCount() - 1;
         console.log("Created collective rental project with ID:", projectId);
         vm.stopBroadcast();
@@ -480,7 +482,7 @@ contract SimulateTestData is Script {
             "Solidity Best Practices",
             100 * 10 ** 18 // 100 tokens price
         );
-        
+
         uint256 contentId = contentShare.contentCounter();
         console.log("Created content with ID:", contentId);
         vm.stopBroadcast();
@@ -513,7 +515,7 @@ contract SimulateTestData is Script {
             5, // goal of 5 participants
             block.timestamp + 5 days // 5 days deadline
         );
-        
+
         uint256 projectId = collectiveRental.getProjectCount() - 1;
         console.log("Created project for governance testing with ID:", projectId);
         vm.stopBroadcast();
@@ -586,5 +588,4 @@ contract SimulateTestData is Script {
 
         console.log("2 additional tasks completed successfully");
     }
-
 }

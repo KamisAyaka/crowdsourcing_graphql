@@ -47,7 +47,8 @@ contract DeployYourContract is ScaffoldETHDeploy {
         console.log("ContentShare deployed to:", address(contentShare));
 
         // Deploy CollectiveRental contract
-        CollectiveRental collectiveRental = new CollectiveRental(taskToken, ISoulboundUserNFT(address(soulboundUserNFT)));
+        CollectiveRental collectiveRental =
+            new CollectiveRental(taskToken, ISoulboundUserNFT(address(soulboundUserNFT)));
         console.log("CollectiveRental deployed to:", address(collectiveRental));
 
         // Deploy ProposalGovernance contract

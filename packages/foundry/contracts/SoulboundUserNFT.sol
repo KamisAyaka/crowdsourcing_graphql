@@ -274,17 +274,17 @@ contract SoulboundUserNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard 
                 '<rect width="400" height="400" fill="#E8F5E8"/>',
                 '<text x="200" y="200" text-anchor="middle" font-size="80">',
                 unicode"🌱",
-                '</text>',
+                "</text>",
                 '<text x="200" y="100" text-anchor="middle" font-size="28" fill="#4CAF50">',
                 unicode"新手游民",
-                '</text>',
+                "</text>",
                 '<text x="200" y="320" text-anchor="middle" font-size="20" fill="#333">',
                 metadata.username,
-                '</text>',
+                "</text>",
                 '<text x="200" y="350" text-anchor="middle" font-size="12" fill="#999">',
                 _formatTimestamp(metadata.createdAt),
-                '</text>',
-                '</svg>'
+                "</text>",
+                "</svg>"
             )
         );
         return Base64.encode(bytes(svg));
@@ -300,17 +300,17 @@ contract SoulboundUserNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard 
                 '<rect width="400" height="400" fill="#E3F2FD"/>',
                 '<text x="200" y="200" text-anchor="middle" font-size="80">',
                 unicode"✈️",
-                '</text>',
+                "</text>",
                 '<text x="200" y="100" text-anchor="middle" font-size="28" fill="#2196F3">',
                 unicode"资深游民",
-                '</text>',
+                "</text>",
                 '<text x="200" y="320" text-anchor="middle" font-size="20" fill="#333">',
                 metadata.username,
-                '</text>',
+                "</text>",
                 '<text x="200" y="350" text-anchor="middle" font-size="12" fill="#999">',
                 _formatTimestamp(metadata.createdAt),
-                '</text>',
-                '</svg>'
+                "</text>",
+                "</svg>"
             )
         );
         return Base64.encode(bytes(svg));
@@ -326,26 +326,21 @@ contract SoulboundUserNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard 
                 '<rect width="400" height="400" fill="#FFF3E0"/>',
                 '<text x="200" y="200" text-anchor="middle" font-size="80">',
                 unicode"👑",
-                '</text>',
+                "</text>",
                 '<text x="200" y="100" text-anchor="middle" font-size="28" fill="#FF9800">',
                 unicode"顶级游民",
-                '</text>',
+                "</text>",
                 '<text x="200" y="320" text-anchor="middle" font-size="20" fill="#333">',
                 metadata.username,
-                '</text>',
+                "</text>",
                 '<text x="200" y="350" text-anchor="middle" font-size="12" fill="#999">',
                 _formatTimestamp(metadata.createdAt),
-                '</text>',
-                '</svg>'
+                "</text>",
+                "</svg>"
             )
         );
         return Base64.encode(bytes(svg));
     }
-
-
-
-
-
 
     /**
      * @notice 格式化时间戳为可读格式
