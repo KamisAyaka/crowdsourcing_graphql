@@ -101,8 +101,8 @@ contract SimulateTestData is Script {
         console.log("Creating enhanced test data for Guild Score calculation...");
 
         // Mint tokens to all test accounts multiple times for more balance
-        address[] memory accounts = new address[](8);
-        uint256[] memory privateKeys = new uint256[](8);
+        address[] memory accounts = new address[](9);
+        uint256[] memory privateKeys = new uint256[](9);
 
         accounts[0] = freelancer2;
         accounts[1] = worker1;
@@ -112,6 +112,7 @@ contract SimulateTestData is Script {
         accounts[5] = admin2;
         accounts[6] = admin3;
         accounts[7] = client1;
+        accounts[8] = client2;
 
         privateKeys[0] = freelancer2PrivateKey;
         privateKeys[1] = worker1PrivateKey;
@@ -121,6 +122,7 @@ contract SimulateTestData is Script {
         privateKeys[5] = admin2PrivateKey;
         privateKeys[6] = admin3PrivateKey;
         privateKeys[7] = client1PrivateKey;
+        privateKeys[8] = client2PrivateKey;
 
         // Mint tokens multiple times for each account
         for (uint256 i = 0; i < accounts.length; i++) {
@@ -132,10 +134,8 @@ contract SimulateTestData is Script {
             vm.stopBroadcast();
         }
 
-        // Skip user NFT creation as they already exist
-        console.log("Skipping user NFT creation - they already exist");
-
-        // All user NFTs already exist, skipping creation
+        // Ensure user NFTs exist for all participants
+        _ensureAllUserNFTs();
 
         // Create multiple rounds of activities for richer data
         console.log("Creating multiple rounds of activities...");
@@ -176,6 +176,63 @@ contract SimulateTestData is Script {
         vm.startBroadcast(privateKey);
         taskToken.approve(address(disputeResolver), type(uint256).max);
         vm.stopBroadcast();
+    }
+
+    /**
+     * @dev Ensure all known participants have a SoulboundUserNFT. Mints if missing.
+     */
+    function _ensureAllUserNFTs() internal {
+        // Accounts to ensure NFTs for
+        address[] memory accounts = new address[](10);
+        uint256[] memory privateKeys = new uint256[](10);
+
+        accounts[0] = freelancer1;
+        accounts[1] = freelancer2;
+        accounts[2] = worker1;
+        accounts[3] = worker2;
+        accounts[4] = worker3;
+        accounts[5] = admin1;
+        accounts[6] = admin2;
+        accounts[7] = admin3;
+        accounts[8] = client1;
+        accounts[9] = client2;
+
+        privateKeys[0] = freelancer1PrivateKey;
+        privateKeys[1] = freelancer2PrivateKey;
+        privateKeys[2] = worker1PrivateKey;
+        privateKeys[3] = worker2PrivateKey;
+        privateKeys[4] = worker3PrivateKey;
+        privateKeys[5] = admin1PrivateKey;
+        privateKeys[6] = admin2PrivateKey;
+        privateKeys[7] = admin3PrivateKey;
+        privateKeys[8] = client1PrivateKey;
+        privateKeys[9] = client2PrivateKey;
+
+        for (uint256 i = 0; i < accounts.length; i++) {
+            _ensureUserNFT(privateKeys[i], accounts[i]);
+        }
+    }
+
+    /**
+     * @dev Mint SoulboundUserNFT for a specific user if not already minted.
+     */
+    function _ensureUserNFT(uint256 privateKey, address user) internal {
+        bool minted = soulboundUserNFT.hasUserMintedNFT(user);
+        if (!minted) {
+            vm.startBroadcast(privateKey);
+            // Prepare a simple skills array
+            string[] memory skills = new string[](2);
+            skills[0] = "Solidity";
+            skills[1] = "Frontend";
+            soulboundUserNFT.mintUserNFT(
+                string.concat("User-", vm.toString(user)),
+                string(abi.encodePacked(vm.toString(user), "@example.com")),
+                "Auto-minted test profile",
+                "https://example.com/avatar.png",
+                skills
+            );
+            vm.stopBroadcast();
+        }
     }
 
     function _createFixedPaymentTasks() internal {

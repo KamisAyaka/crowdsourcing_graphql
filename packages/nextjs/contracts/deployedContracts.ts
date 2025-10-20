@@ -2913,25 +2913,6 @@ const deployedContracts = {
           anonymous: false,
         },
         {
-          type: "event",
-          name: "RentalEnded",
-          inputs: [
-            {
-              name: "id",
-              type: "uint256",
-              indexed: true,
-              internalType: "uint256",
-            },
-            {
-              name: "success",
-              type: "bool",
-              indexed: false,
-              internalType: "bool",
-            },
-          ],
-          anonymous: false,
-        },
-        {
           type: "error",
           name: "OwnableInvalidOwner",
           inputs: [
@@ -4575,7 +4556,7 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 4,
+      deployedOnBlock: 5,
     },
     DisputeResolver: {
       address: "0x0c8e79f3534b00d9a3d4a856b665bf4ebc22f2ba",
@@ -6215,7 +6196,7 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 2,
+      deployedOnBlock: 3,
     },
     BiddingTask: {
       address: "0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d",
@@ -7279,7 +7260,7 @@ const deployedContracts = {
         updatePlatformFee: "contracts/task/BaseTask.sol",
         withdrawPlatformRevenue: "contracts/task/BaseTask.sol",
       },
-      deployedOnBlock: 3,
+      deployedOnBlock: 4,
     },
   },
 } as const;

@@ -773,25 +773,6 @@
     "anonymous": false
   },
   {
-    "type": "event",
-    "name": "RentalEnded",
-    "inputs": [
-      {
-        "name": "id",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "success",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
     "type": "error",
     "name": "OwnableInvalidOwner",
     "inputs": [
